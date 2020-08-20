@@ -1,10 +1,9 @@
 //#region Imports
 
-import { ApiModelProperty } from '@nestjs/swagger';
-import { IsDate, IsDefined, IsEmail, IsString, MaxLength } from 'class-validator';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { IsDefined, IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
 
 import { BaseCrudCreatePayload } from '../../../common/base-crud-create.payload';
-import { Transform } from 'class-transformer';
 import { DefaultValidationMessages } from '../../../models/enums/default-validation-messages';
 
 //#endregion
@@ -40,11 +39,18 @@ export class CreateUserPayload extends BaseCrudCreatePayload {
   public password: string;
 
   /**
-   * A data de nasicmento do usuário
+   * O cpf do usuário
    */
   @ApiModelProperty()
-  @IsDefined({ message: 'É necessário enviar uma data de nascimento.' })
-  @IsDate({ message: 'É necessário enviar uma data correta' })
-  @Transform(value => new Date(value))
-  public birthday: Date;
+  @IsDefined({ message: 'É necessário enviar um cpf.' })
+  @IsString({ message: DefaultValidationMessages.IsString })
+  public cpf: string;
+
+  /**
+   * A descrição atual do usuário
+   */
+  @ApiModelPropertyOptional()
+  @IsOptional()
+  @IsString({ message: DefaultValidationMessages.IsString })
+  public description?: string;
 }

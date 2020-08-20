@@ -1,6 +1,6 @@
 //#region Imports
 
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
@@ -25,10 +25,16 @@ export class UserProxy extends BaseCrudProxy {
   public name: string;
 
   /**
-   * A data de nascimento do usuário
+   * O cpf do usuário
    */
   @ApiModelProperty()
-  public birthday: Date;
+  public cpf: string;
+
+  /**
+   * A descrição do usuário
+   */
+  @ApiModelPropertyOptional()
+  public description?: string;
 
   /**
    * As permissões desse usuário
@@ -46,7 +52,8 @@ export class UserProxy extends BaseCrudProxy {
 
     this.email = entity.email;
     this.name = entity.name;
-    this.birthday = entity.birthday;
+    this.cpf = entity.cpf;
+    this.description = entity.description;
 
     this.roles = entity.roles;
   }

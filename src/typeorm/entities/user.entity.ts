@@ -31,16 +31,26 @@ export class UserEntity extends BaseEntity {
   public password: string;
 
   /**
-   * A data de nascimento do usuário
+   * O cpf do usuário
    */
   @Column({ nullable: false })
-  public birthday: Date;
+  public cpf: string;
+
+  /**
+   * A descrição atual do usuário
+   */
+  @Column({ nullable: true })
+  public description?: string;
 
   /**
    * As permissões desse usuário
    */
   @Column({ nullable: false })
   public roles: string;
+
+  /**
+   * Joins
+   */
 
   /**
    * Construtor padrão

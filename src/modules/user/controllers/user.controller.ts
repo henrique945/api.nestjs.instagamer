@@ -77,7 +77,8 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
   @ProtectTo('user', 'admin')
   public async getMe(@Request() nestRequest: NestJSRequest): Promise<CrudProxy<UserProxy>> {
     const user = await this.service.findOne({ where: { id: nestRequest.user.id } });
-    return await this.service.repository.save(user);
+
+    return mapCrud(UserProxy, user);
   }
 
   /**
@@ -86,7 +87,7 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
    * @param nestRequest As informações da requisição do NestJS
    * @param crudRequest As informações da requisição do CRUD
    */
-  @ProtectTo('user', 'admin')
+  @ProtectTo( 'admin')
   @Override()
   @ApiOkResponse({ type: UserProxy, isArray: true })
   public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<UserProxy>> {
@@ -131,6 +132,8 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
 
     if (alreadyHasUser)
       throw new BadRequestException('Já existe um usuário cadastrado com esse e-mail.');
+
+    // TODO: validar se o cpf é válido
 
     user.password = await this.service.getEncryptedPassword(user.password);
     user.roles = 'user';
@@ -177,9 +180,10 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
   private getEntityFromPayload(payload: CreateUserPayload | UpdateUserPayload, id?: number, isUserAdmin: boolean = false): UserEntity {
     return new UserEntity({
       ...isValid(id) && { id },
-      ...isValid(payload.name) && { name: payload.name },
-      ...isValid(payload.birthday) && { birthday: payload.birthday },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
+      ...isValid(payload.name) && { name: payload.name },
+      ...isValid(payload.cpf) && { cpf: payload.cpf },
+      ...isValid(payload.description) && { description: payload.description },
       ...payload instanceof CreateUserPayload && { email: payload.email },
       ...payload instanceof CreateUserPayload && { password: payload.password },
     });

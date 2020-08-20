@@ -23,11 +23,18 @@ export class UpdateUserPayload extends BaseCrudCreatePayload {
   public name?: string;
 
   /**
-   * A data de nascimento do usuário
+   * O cpf do usuário
    */
   @ApiModelPropertyOptional()
   @IsOptional()
-  @IsDate({ message: 'É ncessário enviar uma data correta' })
-  @Transform(value => new Date(value))
-  public birthday?: Date;
+  @IsString({ message: DefaultValidationMessages.IsString })
+  public cpf?: string;
+
+  /**
+   * A descrição atual do usuário
+   */
+  @ApiModelPropertyOptional()
+  @IsOptional()
+  @IsString({ message: DefaultValidationMessages.IsString })
+  public description?: string;
 }
