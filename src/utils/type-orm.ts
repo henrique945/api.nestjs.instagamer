@@ -4,6 +4,7 @@ import { EntitySchema } from 'typeorm/entity-schema/EntitySchema';
 import { UserEntity } from '../typeorm/entities/user.entity';
 import { GameEntity } from '../typeorm/entities/game.entity';
 import { UserGameEntity } from '../typeorm/entities/user-game.entity';
+import { PostEntity } from '../typeorm/entities/post.entity';
 
 //#endregion
 
@@ -15,4 +16,5 @@ export const TypeOrmEntities: Array<Function | string | EntitySchema> = [
     UserEntity,
     GameEntity,
     UserGameEntity,
+    PostEntity,
   ];

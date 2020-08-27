@@ -6,6 +6,7 @@ import { BaseEntity } from '../../common/base-entity';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UserGameEntity } from './user-game.entity';
+import { PostEntity } from './post.entity';
 
 //#endregion
 
@@ -42,10 +43,10 @@ export class GameEntity extends BaseEntity {
   /**
    * Joins
    */
-  // @ApiModelProperty({ type: type => PostEntity, isArray: true })
-  // @OneToMany(u => PostEntity, post => post.game)
-  // @Type(() => PostEntity)
-  // public posts: PostEntity[];
+  @ApiModelProperty({ type: type => PostEntity, isArray: true })
+  @OneToMany(u => PostEntity, post => post.game)
+  @Type(() => PostEntity)
+  public posts: PostEntity[];
 
   @ApiModelProperty({ type: type => UserGameEntity, isArray: true })
   @OneToMany(u => UserGameEntity, userGame => userGame.game)

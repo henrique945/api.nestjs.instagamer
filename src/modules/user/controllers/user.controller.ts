@@ -37,7 +37,10 @@ import { UserEntity } from '../../../typeorm/entities/user.entity';
   },
   query: {
     exclude: ['password'],
-    join: {},
+    join: {
+      userGames: {},
+      posts: {},
+    },
   },
   routes: {
     exclude: [

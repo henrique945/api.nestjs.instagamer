@@ -17,23 +17,23 @@ import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { isValid } from '../../../utils/functions';
 import { NestJSRequest } from '../../../utils/type.shared';
 
-import { UserGameEntity } from '../../../typeorm/entities/user-game.entity';
-import { UserGameService } from '../services/user-game.service';
-import { UserGameProxy } from '../models/user-game.proxy';
-import { CreateUserGamePayload } from '../models/create-user-game.payload';
-import { UpdateUserGamePayload } from '../models/update-user-game.payload';
+import { PostEntity } from '../../../typeorm/entities/post.entity';
+import { PostService } from '../services/post.service';
+import { PostProxy } from '../models/post.proxy';
+import { CreatePostPayload } from '../models/create-post.payload';
+import { UpdatePostPayload } from '../models/update-post.payload';
 import { UserService } from '../../user/services/user.service';
 import { GameService } from '../../game/services/game.service';
 
 //#endregion
 
 /**
- * A classe que representa o controlador que lida com os usuário-jogos
+ * A classe que representa o controlador que lida com os post
  */
 @ApiBearerAuth()
 @Crud({
   model: {
-    type: UserGameEntity,
+    type: PostEntity,
   },
   query: {
     join: {
@@ -49,9 +49,9 @@ import { GameService } from '../../game/services/game.service';
   },
 })
 @UseInterceptors(ClassSerializerInterceptor)
-@ApiUseTags('user-game')
-@Controller('user-game')
-export class UserGameController extends BaseCrudController<UserGameEntity, UserGameService> {
+@ApiUseTags('post')
+@Controller('post')
+export class PostController extends BaseCrudController<PostEntity, PostService> {
 
   //#region Constructor
 
@@ -59,7 +59,7 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    * Construtor padrão
    */
   constructor(
-    service: UserGameService,
+    service: PostService,
     private readonly userService: UserService,
     private readonly gameService: GameService,
   ) {
@@ -78,9 +78,9 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    */
   @ProtectTo('user', 'admin')
   @Override()
-  @ApiOkResponse({ type: UserGameProxy, isArray: true })
-  public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<UserGameProxy>> {
-    return this.base.getManyBase(crudRequest).then(response => mapCrud(UserGameProxy, response));
+  @ApiOkResponse({ type: PostProxy, isArray: true })
+  public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<PostProxy>> {
+    return this.base.getManyBase(crudRequest).then(response => mapCrud(PostProxy, response));
   }
 
   /**
@@ -91,16 +91,16 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    */
   @ProtectTo('user', 'admin')
   @Override()
-  @ApiOkResponse({ type: UserGameProxy })
-  public async getOne(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<UserGameProxy>> {
-    const userGameId = +nestRequest.params.id;
+  @ApiOkResponse({ type: PostProxy })
+  public async getOne(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<PostProxy>> {
+    const postId = +nestRequest.params.id;
 
-    const { exists } = await this.service.exists([userGameId]);
+    const { exists } = await this.service.exists([postId]);
 
     if (!exists)
       throw new NotFoundException('A entidade procurada não existe.');
 
-    return await this.base.getOneBase(crudRequest).then(response => mapCrud(UserGameProxy, response));
+    return await this.base.getOneBase(crudRequest).then(response => mapCrud(PostProxy, response));
   }
 
   /**
@@ -111,21 +111,21 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    * @param payload As informações para a criação da entidade
    */
   @Override()
-  @ApiOkResponse({ type: UserGameProxy })
-  public async createOne(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest, @Body() payload: CreateUserGamePayload): Promise<CrudProxy<UserGameProxy>> {
-    const userGame = this.getEntityFromPayload(payload);
+  @ApiOkResponse({ type: PostProxy })
+  public async createOne(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest, @Body() payload: CreatePostPayload): Promise<CrudProxy<PostProxy>> {
+    const post = this.getEntityFromPayload(payload);
 
-    const user = await this.userService.findOne({ where: { id: userGame.userId } });
-
-    if (!user)
-      throw new NotFoundException('Usuário não encontrado.');
-
-    const game = await this.gameService.findOne({ where: { id: userGame.gameId } });
+    const game = await this.gameService.findOne({ where: { id: post.gameId } });
 
     if (!game)
       throw new NotFoundException('Jogo não encontrado.');
 
-    return await this.base.createOneBase(crudRequest, userGame).then(response => mapCrud(UserGameProxy, response));
+    const user = await this.gameService.findOne({ where: { id: post.userId } });
+
+    if (!user)
+      throw new NotFoundException('Usuário não encontrado.');
+
+    return await this.base.createOneBase(crudRequest, post).then(response => mapCrud(PostProxy, response));
   }
 
   /**
@@ -136,28 +136,28 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    */
   @ProtectTo('user', 'admin')
   @Override()
-  @ApiOkResponse({ type: UserGameProxy })
-  public async replaceOne(@Request() nestRequest: NestJSRequest, @Body() payload: UpdateUserGamePayload): Promise<CrudProxy<UserGameProxy>> {
-    const userGameId = +nestRequest.params.id;
+  @ApiOkResponse({ type: PostProxy })
+  public async replaceOne(@Request() nestRequest: NestJSRequest, @Body() payload: UpdatePostPayload): Promise<CrudProxy<PostProxy>> {
+    const postId = +nestRequest.params.id;
 
-    const { exists } = await this.service.exists([userGameId]);
+    const { exists } = await this.service.exists([postId]);
 
     if (!exists)
       throw new NotFoundException('A entidade procurada não existe.');
 
-    const userGame = this.getEntityFromPayload(payload, userGameId);
+    const post = this.getEntityFromPayload(payload, postId);
 
-    const user = await this.userService.findOne({ where: { id: userGame.userId } });
-
-    if (!user)
-      throw new NotFoundException('Usuário não encontrado.');
-
-    const game = await this.gameService.findOne({ where: { id: userGame.gameId } });
+    const game = await this.gameService.findOne({ where: { id: post.gameId } });
 
     if (!game)
       throw new NotFoundException('Jogo não encontrado.');
 
-    return await this.service.repository.save(userGame).then(response => mapCrud(UserGameProxy, response));
+    const user = await this.gameService.findOne({ where: { id: post.userId } });
+
+    if (!user)
+      throw new NotFoundException('Usuário não encontrado.');
+
+    return await this.service.repository.save(post).then(response => mapCrud(PostProxy, response));
   }
 
   //#endregion
@@ -171,10 +171,13 @@ export class UserGameController extends BaseCrudController<UserGameEntity, UserG
    * @param id A identificação do usuário
    * @param isUserAdmin Diz se é admin
    */
-  private getEntityFromPayload(payload: CreateUserGamePayload | UpdateUserGamePayload, id?: number, isUserAdmin: boolean = false): UserGameEntity {
-    return new UserGameEntity({
+  private getEntityFromPayload(payload: CreatePostPayload | UpdatePostPayload, id?: number, isUserAdmin: boolean = false): PostEntity {
+    return new PostEntity({
       ...isValid(id) && { id },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
+      ...isValid(payload.name) && { name: payload.name },
+      ...isValid(payload.description) && { description: payload.description },
+      ...isValid(payload.imageUrl) && { imageUrl: payload.imageUrl },
       ...isValid(payload.userId) && { userId: payload.userId },
       ...isValid(payload.gameId) && { gameId: payload.gameId },
     });

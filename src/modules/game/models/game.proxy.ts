@@ -2,6 +2,7 @@
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { GameEntity } from '../../../typeorm/entities/game.entity';
+import { ApiModelProperty } from '@nestjs/swagger';
 
 //#endregion
 
@@ -13,21 +14,25 @@ export class GameProxy extends BaseCrudProxy {
   /**
    * O nome do usuário
    */
+  @ApiModelProperty()
   public name: string;
 
   /**
    * A descrição do jogo
    */
+  @ApiModelProperty()
   public description: string;
 
   /**
    * A imagem título do jogo
    */
+  @ApiModelProperty()
   public titleImage: string;
 
   /**
    * A lista de imagens do jogo
    */
+  @ApiModelProperty()
   public listImages: string[];
 
   /**

@@ -9,6 +9,7 @@ import { TypeOrmService } from './modules/typeorm/services/type-orm.service';
 import { UserModule } from './modules/user/user.module';
 import { GameModule } from './modules/game/game.module';
 import { UserGameModule } from './modules/user-game/user-game.module';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserGameModule } from './modules/user-game/user-game.module';
     UserModule,
     GameModule,
     UserGameModule,
+    PostModule,
   ],
   providers: [
     EnvModule,
