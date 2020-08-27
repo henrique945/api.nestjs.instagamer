@@ -8,6 +8,7 @@ import { EnvModule } from './modules/env/env.module';
 import { TypeOrmService } from './modules/typeorm/services/type-orm.service';
 import { UserModule } from './modules/user/user.module';
 import { GameModule } from './modules/game/game.module';
+import { UserGameModule } from './modules/user-game/user-game.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { GameModule } from './modules/game/game.module';
     AuthTokenModule,
     UserModule,
     GameModule,
+    UserGameModule,
   ],
   providers: [
     EnvModule,

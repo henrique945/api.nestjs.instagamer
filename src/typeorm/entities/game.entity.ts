@@ -5,6 +5,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/base-entity';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { UserGameEntity } from './user-game.entity';
 
 //#endregion
 
@@ -46,10 +47,10 @@ export class GameEntity extends BaseEntity {
   // @Type(() => PostEntity)
   // public posts: PostEntity[];
 
-  // @ApiModelProperty({ type: type => UserGame, isArray: true })
-  // @OneToMany(u => UserGame, post => post.game)
-  // @Type(() => UserGame)
-  // public userGames: UserGame[];
+  @ApiModelProperty({ type: type => UserGameEntity, isArray: true })
+  @OneToMany(u => UserGameEntity, userGame => userGame.game)
+  @Type(() => UserGameEntity)
+  public userGames: UserGameEntity[];
 
   /**
    * Construtor padrão

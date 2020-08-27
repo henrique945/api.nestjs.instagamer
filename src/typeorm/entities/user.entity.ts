@@ -1,8 +1,11 @@
 //#region Imports
 
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../common/base-entity';
+import { ApiModelProperty } from '@nestjs/swagger';
+import { UserGameEntity } from './user-game.entity';
+import { Type } from 'class-transformer';
 
 //#endregion
 
@@ -51,6 +54,10 @@ export class UserEntity extends BaseEntity {
   /**
    * Joins
    */
+  @ApiModelProperty({ type: type => UserGameEntity, isArray: true })
+  @OneToMany(u => UserGameEntity, userGame => userGame.user)
+  @Type(() => UserGameEntity)
+  public userGames: UserGameEntity[];
 
   /**
    * Construtor padrão
