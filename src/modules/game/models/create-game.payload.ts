@@ -1,7 +1,7 @@
 //#region Imports
 
-import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsDefined, IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
+import { ApiModelProperty } from '@nestjs/swagger';
+import { IsArray, IsDefined, IsString } from 'class-validator';
 
 import { BaseCrudCreatePayload } from '../../../common/base-crud-create.payload';
 import { DefaultValidationMessages } from '../../../models/enums/default-validation-messages';

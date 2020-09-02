@@ -40,6 +40,8 @@ import { UserEntity } from '../../../typeorm/entities/user.entity';
     join: {
       userGames: {},
       posts: {},
+      favorites: {},
+      comments: {},
     },
   },
   routes: {
@@ -90,7 +92,7 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
    * @param nestRequest As informações da requisição do NestJS
    * @param crudRequest As informações da requisição do CRUD
    */
-  @ProtectTo( 'admin')
+  @ProtectTo('admin')
   @Override()
   @ApiOkResponse({ type: UserProxy, isArray: true })
   public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<UserProxy>> {

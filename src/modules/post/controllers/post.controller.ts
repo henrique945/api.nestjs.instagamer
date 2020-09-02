@@ -37,8 +37,11 @@ import { GameService } from '../../game/services/game.service';
   },
   query: {
     join: {
-      user: {},
+      user: {
+        exclude: ['password'],
+      },
       game: {},
+      comments: {},
     },
   },
   routes: {

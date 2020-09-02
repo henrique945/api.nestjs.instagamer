@@ -1,12 +1,14 @@
 //#region Imports
 
-import { Column, Entity, OneToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../common/base-entity';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UserEntity } from './user.entity';
 import { GameEntity } from './game.entity';
+import { CommentEntity } from './comment.entity';
+import { FavoriteEntity } from './favorite.entity';
 
 //#endregion
 
@@ -59,10 +61,15 @@ export class PostEntity extends BaseEntity {
   @Type(() => GameEntity)
   public game: GameEntity;
 
-  // @ApiModelProperty({ type: type => CommentEntity, isArray: true })
-  // @OneToMany(u => CommentEntity, post => userGame.game)
-  // @Type(() => CommentEntity)
-  // public comments: CommentEntity[];
+  @ApiModelProperty({ type: type => CommentEntity, isArray: true })
+  @OneToMany(u => CommentEntity, comment => comment.post)
+  @Type(() => CommentEntity)
+  public comments: CommentEntity[];
+
+  @ApiModelProperty({ type: type => FavoriteEntity, isArray: true })
+  @OneToMany(u => FavoriteEntity, favorite => favorite.post)
+  @Type(() => FavoriteEntity)
+  public favorites: FavoriteEntity[];
 
   /**
    * Construtor padrão

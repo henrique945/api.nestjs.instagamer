@@ -10,6 +10,8 @@ import { UserModule } from './modules/user/user.module';
 import { GameModule } from './modules/game/game.module';
 import { UserGameModule } from './modules/user-game/user-game.module';
 import { PostModule } from './modules/post/post.module';
+import { CommentModule } from './modules/comment/comment.module';
+import { FavoriteModule } from './modules/favorite/favorite.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { PostModule } from './modules/post/post.module';
     GameModule,
     UserGameModule,
     PostModule,
+    CommentModule,
+    FavoriteModule,
   ],
   providers: [
     EnvModule,
