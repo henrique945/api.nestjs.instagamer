@@ -7,6 +7,7 @@ import { UserGameEntity } from '../typeorm/entities/user-game.entity';
 import { PostEntity } from '../typeorm/entities/post.entity';
 import { CommentEntity } from '../typeorm/entities/comment.entity';
 import { FavoriteEntity } from '../typeorm/entities/favorite.entity';
+import { ChatEntity } from '../typeorm/entities/chat.entity';
 
 //#endregion
 
@@ -21,4 +22,5 @@ export const TypeOrmEntities: Array<Function | string | EntitySchema> = [
   PostEntity,
   CommentEntity,
   FavoriteEntity,
+  ChatEntity,
 ];

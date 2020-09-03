@@ -42,6 +42,8 @@ import { UserEntity } from '../../../typeorm/entities/user.entity';
       posts: {},
       favorites: {},
       comments: {},
+      messagesSent: {},
+      messagesReceived: {},
     },
   },
   routes: {

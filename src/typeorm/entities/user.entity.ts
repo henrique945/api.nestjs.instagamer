@@ -9,6 +9,7 @@ import { Type } from 'class-transformer';
 import { PostEntity } from './post.entity';
 import { CommentEntity } from './comment.entity';
 import { FavoriteEntity } from './favorite.entity';
+import { ChatEntity } from './chat.entity';
 
 //#endregion
 
@@ -76,6 +77,16 @@ export class UserEntity extends BaseEntity {
   @OneToMany(u => FavoriteEntity, favorite => favorite.user)
   @Type(() => FavoriteEntity)
   public favorites: FavoriteEntity[];
+
+  @ApiModelProperty({ type: type => ChatEntity, isArray: true })
+  @OneToMany(u => ChatEntity, sent => sent.messageSent)
+  @Type(() => ChatEntity)
+  public messagesSent: ChatEntity[];
+
+  @ApiModelProperty({ type: type => ChatEntity, isArray: true })
+  @OneToMany(u => ChatEntity, received => received.messageReceived)
+  @Type(() => ChatEntity)
+  public messagesReceived: ChatEntity[];
 
   /**
    * Construtor padrão

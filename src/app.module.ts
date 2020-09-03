@@ -12,6 +12,7 @@ import { UserGameModule } from './modules/user-game/user-game.module';
 import { PostModule } from './modules/post/post.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FavoriteModule } from './modules/favorite/favorite.module';
     PostModule,
     CommentModule,
     FavoriteModule,
+    ChatModule,
   ],
   providers: [
     EnvModule,
