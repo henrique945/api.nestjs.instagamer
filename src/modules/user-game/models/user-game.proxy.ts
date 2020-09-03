@@ -4,6 +4,7 @@ import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { GameEntity } from '../../../typeorm/entities/game.entity';
 import { UserGameEntity } from '../../../typeorm/entities/user-game.entity';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 
 //#endregion
 
@@ -25,6 +26,18 @@ export class UserGameProxy extends BaseCrudProxy {
   public gameId: number;
 
   /**
+   * O usuário associado
+   */
+  @ApiModelProperty()
+  public user: UserEntity;
+
+  /**
+   * O jogo associado
+   */
+  @ApiModelProperty()
+  public game: GameEntity;
+
+  /**
    * Construtor padrão
    */
   constructor(
@@ -34,5 +47,8 @@ export class UserGameProxy extends BaseCrudProxy {
 
     this.userId = entity.userId;
     this.gameId = entity.gameId;
+
+    this.user = entity.user;
+    this.game = entity.game;
   }
 }

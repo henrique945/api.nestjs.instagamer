@@ -4,6 +4,7 @@ import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { PostEntity } from '../../../typeorm/entities/post.entity';
 
 //#endregion
 
@@ -43,6 +44,12 @@ export class UserProxy extends BaseCrudProxy {
   public roles: string;
 
   /**
+   * Os posts do usuário
+   */
+  @ApiModelProperty()
+  public posts: PostEntity[];
+
+  /**
    * Construtor padrão
    */
   constructor(
@@ -56,5 +63,7 @@ export class UserProxy extends BaseCrudProxy {
     this.description = entity.description;
 
     this.roles = entity.roles;
+
+    this.posts = entity.posts;
   }
 }
