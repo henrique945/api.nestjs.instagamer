@@ -1,6 +1,7 @@
 //#region Imports
 
 import {
+  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -24,6 +25,7 @@ import { CreatePostPayload } from '../models/create-post.payload';
 import { UpdatePostPayload } from '../models/update-post.payload';
 import { UserService } from '../../user/services/user.service';
 import { GameService } from '../../game/services/game.service';
+import { UserGameService } from '../../user-game/services/user-game.service';
 
 //#endregion
 
@@ -66,6 +68,7 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
     service: PostService,
     private readonly userService: UserService,
     private readonly gameService: GameService,
+    private readonly userGamesService: UserGameService,
   ) {
     super(service);
   }
@@ -130,6 +133,15 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
       throw new NotFoundException('Usuário não encontrado.');
 
     // TODO: user can only create post to game that he follows
+    const userGames = await this.userGamesService.findOne({
+      where: {
+        userId: user.id,
+        gameId: game.id,
+      },
+    });
+
+    if (!userGames)
+      throw new BadRequestException('Usuário não pode criar um post com um jogo que não segue');
 
     return await this.base.createOneBase(crudRequest, post).then(response => mapCrud(PostProxy, response));
   }
