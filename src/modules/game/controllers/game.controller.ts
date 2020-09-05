@@ -24,6 +24,7 @@ import { GameProxy } from '../models/game.proxy';
 import { UpdateGamePayload } from '../models/update-game.payload';
 import { CreateGamePayload } from '../models/create-game.payload';
 import { UserGameService } from '../../user-game/services/user-game.service';
+import { WhoEntity } from '../../../typeorm/entities/embedded/who.entity';
 
 //#endregion
 
@@ -132,7 +133,7 @@ export class GameController extends BaseCrudController<GameEntity, GameService> 
   public async createOne(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest, @Body() payload: CreateGamePayload): Promise<CrudProxy<GameProxy>> {
     const game = this.getEntityFromPayload(payload);
 
-    return await this.base.createOneBase(crudRequest, game).then(response => mapCrud(GameProxy, response));
+    return await this.service.repository.save(game).then(response => mapCrud(GameProxy, response));
   }
 
   /**
@@ -172,10 +173,12 @@ export class GameController extends BaseCrudController<GameEntity, GameService> 
     return new GameEntity({
       ...isValid(id) && { id },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
-      ...isValid(payload.name) && { name: payload.name },
-      ...isValid(payload.description) && { description: payload.description },
       ...isValid(payload.listImages) && { listImages: payload.listImages },
       ...isValid(payload.titleImage) && { titleImage: payload.titleImage },
+      who: new WhoEntity({
+        ...isValid(payload.whoName) && { name: payload.whoName },
+        ...isValid(payload.whoDescription) && { description: payload.whoDescription },
+      }),
     });
   }
 

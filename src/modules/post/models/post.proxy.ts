@@ -25,8 +25,8 @@ export class PostProxy extends BaseCrudProxy {
   ) {
     super(entity);
 
-    this.name = entity.name;
-    this.description = entity.description;
+    this.name = entity.who.name;
+    this.description = entity.who.description;
     this.imageUrl = entity.imageUrl;
     this.userId = entity.userId;
     this.gameId = entity.gameId;

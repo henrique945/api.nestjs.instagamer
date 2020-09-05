@@ -19,7 +19,7 @@ export class CreateGamePayload extends BaseCrudCreatePayload {
   @ApiModelProperty()
   @IsDefined({ message: 'É necessário enviar um nome.' })
   @IsString({ message: DefaultValidationMessages.IsString })
-  public name: string;
+  public whoName: string;
 
   /**
    * A descrição do jogo
@@ -27,7 +27,7 @@ export class CreateGamePayload extends BaseCrudCreatePayload {
   @ApiModelProperty()
   @IsDefined({ message: 'É necessário enviar uma descrição.' })
   @IsString({ message: DefaultValidationMessages.IsString })
-  public description: string;
+  public whoDescription: string;
 
   /**
    * A imagem título do jogo

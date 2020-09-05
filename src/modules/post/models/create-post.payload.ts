@@ -19,7 +19,7 @@ export class CreatePostPayload extends BaseCrudCreatePayload {
   @ApiModelProperty()
   @IsDefined({ message: 'É necessário enviar um nome.' })
   @IsString({ message: DefaultValidationMessages.IsString })
-  public name: string;
+  public whoName: string;
 
   /**
    * A descrição do post
@@ -27,7 +27,7 @@ export class CreatePostPayload extends BaseCrudCreatePayload {
   @ApiModelPropertyOptional()
   @IsOptional()
   @IsString({ message: DefaultValidationMessages.IsString })
-  public description?: string;
+  public whoDescription?: string;
 
   /**
    * A imagem do post

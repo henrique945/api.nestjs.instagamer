@@ -193,8 +193,8 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
     return new PostEntity({
       ...isValid(id) && { id },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
-      ...isValid(payload.name) && { name: payload.name },
-      ...isValid(payload.description) && { description: payload.description },
+      ...isValid(payload.whoName) && { whoName: payload.whoName },
+      ...isValid(payload.whoDescription) && { whoDescription: payload.whoDescription },
       ...isValid(payload.imageUrl) && { imageUrl: payload.imageUrl },
       ...isValid(payload.userId) && { userId: payload.userId },
       ...isValid(payload.gameId) && { gameId: payload.gameId },

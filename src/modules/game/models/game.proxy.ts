@@ -23,8 +23,8 @@ export class GameProxy extends BaseCrudProxy {
   ) {
     super(entity);
 
-    this.name = entity.name;
-    this.description = entity.description;
+    this.name = entity.who.name;
+    this.description = entity.who.description;
     this.listImages = entity.listImages;
     this.titleImage = entity.titleImage;
 

@@ -9,6 +9,7 @@ import { UserEntity } from './user.entity';
 import { GameEntity } from './game.entity';
 import { CommentEntity } from './comment.entity';
 import { FavoriteEntity } from './favorite.entity';
+import { WhoEntity } from './embedded/who.entity';
 
 //#endregion
 
@@ -19,16 +20,10 @@ import { FavoriteEntity } from './favorite.entity';
 export class PostEntity extends BaseEntity {
 
   /**
-   * O nome do post
+   * Quem é a entidade post
    */
-  @Column({ nullable: false })
-  public name: string;
-
-  /**
-   * A descrição do post
-   */
-  @Column({ nullable: true })
-  public description?: string;
+  @Column(type => WhoEntity)
+  who: WhoEntity;
 
   /**
    * A imagem do post

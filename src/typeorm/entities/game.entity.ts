@@ -7,6 +7,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UserGameEntity } from './user-game.entity';
 import { PostEntity } from './post.entity';
+import { WhoEntity } from './embedded/who.entity';
 
 //#endregion
 
@@ -17,16 +18,10 @@ import { PostEntity } from './post.entity';
 export class GameEntity extends BaseEntity {
 
   /**
-   * O nome do jogo
+   * Quem é a entidade jogo
    */
-  @Column({ nullable: false })
-  public name: string;
-
-  /**
-   * A descrição do jogo
-   */
-  @Column({ nullable: false })
-  public description: string;
+  @Column(type => WhoEntity)
+  who: WhoEntity;
 
   /**
    * A imagem título do jogo
