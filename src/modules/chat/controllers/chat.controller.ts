@@ -4,11 +4,12 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   NotFoundException,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { Crud, CrudRequest, Override, ParsedRequest } from '@nestjsx/crud';
 
 import { BaseCrudController } from '../../../common/base-crud.controller';
@@ -72,17 +73,35 @@ export class ChatController extends BaseCrudController<ChatEntity, ChatService> 
 
   //#region Public Methods
 
+  @Get('/list')
+  @ProtectTo('user', 'admin')
+  @ApiOperation({ title: 'Lista todos os chats do usuário.' })
+  public async listUserChats(@Request() nestRequest: NestJSRequest): Promise<CrudProxy<ChatProxy>> {
+    const chats = await this.service.find({
+      where: [
+        {
+          messageSentId: +nestRequest.user.id,
+        },
+        {
+          messageReceivedId: +nestRequest.user.id,
+        },
+      ],
+      order: { createdAt: 'ASC' },
+    });
+
+    return mapCrud(ChatProxy, chats);
+  }
+
   /**
    * Método que retorna várias informações da entidade
    *
    * @param nestRequest As informações da requisição do NestJS
    * @param crudRequest As informações da requisição do CRUD
    */
-  @ProtectTo('user', 'admin')
+  @ProtectTo('admin')
   @Override()
   @ApiOkResponse({ type: ChatProxy, isArray: true })
   public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<ChatProxy>> {
-    // TODO ordenar pela data de criação
     return this.base.getManyBase(crudRequest).then(response => mapCrud(ChatProxy, response));
   }
 

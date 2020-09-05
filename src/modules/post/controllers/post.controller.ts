@@ -132,7 +132,7 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
     if (!user)
       throw new NotFoundException('Usuário não encontrado.');
 
-    // TODO: user can only create post to game that he follows
+    // user can only create post to game that he follows
     const userGames = await this.userGamesService.findOne({
       where: {
         userId: user.id,

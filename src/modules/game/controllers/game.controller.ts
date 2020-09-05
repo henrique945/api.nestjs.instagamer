@@ -70,7 +70,7 @@ export class GameController extends BaseCrudController<GameEntity, GameService> 
   //#region Public Methods
 
   @Get('/list')
-  @ApiOperation({ title: 'Lista os jogos que o usuário segue para fazer a postagem' })
+  @ApiOperation({ title: 'Lista os jogos que o usuário segue para fazer a postagem.' })
   @ProtectTo('user', 'admin')
   public async listGameThatUserCanPost(@Request() nestRequest: NestJSRequest): Promise<CrudProxy<GameProxy>> {
     const userGames = await this.userGamesService.find({

@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common/base-entity';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -17,16 +17,19 @@ export class ChatEntity extends BaseEntity {
   /**
    * O id do usuário que enviou a mensagem
    */
+  @Column({ nullable: false })
   messageSentId: number;
 
   /**
    * O id do usuário que recebeu a mensagem
    */
+  @Column({ nullable: false })
   messageReceivedId: number;
 
   /**
    * A mensagem da conversa
    */
+  @Column({ nullable: false })
   message: string;
 
   /**
