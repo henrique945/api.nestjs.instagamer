@@ -1,10 +1,11 @@
 //#region Imports
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GameEntity } from '../../typeorm/entities/game.entity';
 import { GameController } from './controllers/game.controller';
 import { GameService } from './services/game.service';
+import { UserGameModule } from '../user-game/user-game.module';
 
 //#endregion
 
@@ -19,6 +20,7 @@ import { GameService } from './services/game.service';
     TypeOrmModule.forFeature([
       GameEntity,
     ]),
+    forwardRef(() => UserGameModule),
   ],
   exports: [
     GameService,

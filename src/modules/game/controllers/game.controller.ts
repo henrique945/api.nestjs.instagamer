@@ -1,23 +1,21 @@
 //#region Imports
 
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
   NotFoundException,
   Request,
-  UnauthorizedException,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
-import { Crud, CrudRequest, CrudRequestInterceptor, Override, ParsedRequest } from '@nestjsx/crud';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
+import { Crud, CrudRequest, Override, ParsedRequest } from '@nestjsx/crud';
 
 import { BaseCrudController } from '../../../common/base-crud.controller';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
-import { isAdmin, isAdminUser, isValid } from '../../../utils/functions';
+import { isValid } from '../../../utils/functions';
 import { NestJSRequest } from '../../../utils/type.shared';
 
 import { GameEntity } from '../../../typeorm/entities/game.entity';
@@ -25,6 +23,7 @@ import { GameService } from '../services/game.service';
 import { GameProxy } from '../models/game.proxy';
 import { UpdateGamePayload } from '../models/update-game.payload';
 import { CreateGamePayload } from '../models/create-game.payload';
+import { UserGameService } from '../../user-game/services/user-game.service';
 
 //#endregion
 
@@ -61,6 +60,7 @@ export class GameController extends BaseCrudController<GameEntity, GameService> 
    */
   constructor(
     service: GameService,
+    private readonly userGames: UserGameService,
   ) {
     super(service);
   }
@@ -69,13 +69,31 @@ export class GameController extends BaseCrudController<GameEntity, GameService> 
 
   //#region Public Methods
 
+  @Get('/list')
+  @ApiOperation({ title: 'Lista os jogos que o usuário segue para fazer a postagem' })
+  @ProtectTo('user', 'admin')
+  public async listGameThatUserCanPost(@Request() nestRequest: NestJSRequest): Promise<CrudProxy<GameProxy>> {
+    const userGames = await this.userGames.find({
+      where: {
+        userId: +nestRequest.user.id,
+      },
+      relations: ['game'],
+    });
+
+    const listGames = userGames.map(item => {
+      return item.game;
+    });
+
+    return mapCrud(GameProxy, listGames);
+  }
+
   /**
    * Método que retorna várias informações da entidade
    *
    * @param nestRequest As informações da requisição do NestJS
    * @param crudRequest As informações da requisição do CRUD
    */
-  @ProtectTo( 'user', 'admin')
+  @ProtectTo('user', 'admin')
   @Override()
   @ApiOkResponse({ type: GameProxy, isArray: true })
   public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<GameProxy>> {

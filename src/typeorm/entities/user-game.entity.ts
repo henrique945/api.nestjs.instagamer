@@ -11,7 +11,7 @@ import { GameEntity } from './game.entity';
 //#endregion
 
 /**
- * A classe que representa a entidade que lida com os usuário-jogos
+ * A classe que representa a entidade que lida com os jogos que os usuário seguem
  */
 @Entity('user-game')
 export class UserGameEntity extends BaseEntity {

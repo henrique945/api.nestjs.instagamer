@@ -129,6 +129,8 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
     if (!user)
       throw new NotFoundException('Usuário não encontrado.');
 
+    // TODO: user can only create post to game that he follows
+
     return await this.base.createOneBase(crudRequest, post).then(response => mapCrud(PostProxy, response));
   }
 

@@ -82,6 +82,7 @@ export class ChatController extends BaseCrudController<ChatEntity, ChatService> 
   @Override()
   @ApiOkResponse({ type: ChatProxy, isArray: true })
   public getMany(@Request() nestRequest: NestJSRequest, @ParsedRequest() crudRequest: CrudRequest): Promise<CrudProxy<ChatProxy>> {
+    // TODO ordenar pela data de criação
     return this.base.getManyBase(crudRequest).then(response => mapCrud(ChatProxy, response));
   }
 

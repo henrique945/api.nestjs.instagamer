@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserGameEntity } from '../../typeorm/entities/user-game.entity';
 import { UserGameService } from './services/user-game.service';
@@ -22,7 +22,7 @@ import { GameModule } from '../game/game.module';
       UserGameEntity,
     ]),
     UserModule,
-    GameModule,
+    forwardRef(() => GameModule),
   ],
   exports: [
     UserGameService,
