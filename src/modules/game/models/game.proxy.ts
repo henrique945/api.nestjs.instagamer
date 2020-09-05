@@ -2,7 +2,9 @@
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { GameEntity } from '../../../typeorm/entities/game.entity';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { PostEntity } from '../../../typeorm/entities/post.entity';
+import { UserGameEntity } from '../../../typeorm/entities/user-game.entity';
 
 //#endregion
 
@@ -10,6 +12,29 @@ import { ApiModelProperty } from '@nestjs/swagger';
  * A classe que representa as informações que são enviadas pela API sobre um jogo
  */
 export class GameProxy extends BaseCrudProxy {
+
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(
+    entity: GameEntity,
+  ) {
+    super(entity);
+
+    this.name = entity.name;
+    this.description = entity.description;
+    this.listImages = entity.listImages;
+    this.titleImage = entity.titleImage;
+
+    this.posts = entity.posts;
+    this.userGames = entity.userGames;
+  }
+
+  //#endregion
+
+  //#region Properties
 
   /**
    * O nome do usuário
@@ -36,16 +61,17 @@ export class GameProxy extends BaseCrudProxy {
   public listImages: string[];
 
   /**
-   * Construtor padrão
+   * Os post sobre o jogo
    */
-  constructor(
-    entity: GameEntity,
-  ) {
-    super(entity);
+  @ApiModelPropertyOptional()
+  public posts: PostEntity[];
 
-    this.name = entity.name;
-    this.description = entity.description;
-    this.listImages = entity.listImages;
-    this.titleImage = entity.titleImage;
-  }
+  /**
+   * A tabela de relação entre usuário e jogos
+   */
+  @ApiModelPropertyOptional()
+  public userGames: UserGameEntity[];
+
+  //#endregion
+
 }

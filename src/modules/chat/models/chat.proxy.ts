@@ -1,9 +1,9 @@
 //#region Imports
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { ApiModelProperty } from '@nestjs/swagger';
-import { CommentEntity } from '../../../typeorm/entities/comment.entity';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { ChatEntity } from '../../../typeorm/entities/chat.entity';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 
 //#endregion
 
@@ -31,6 +31,18 @@ export class ChatProxy extends BaseCrudProxy {
   public message: string;
 
   /**
+   * O usuário que enviou a mensagem
+   */
+  @ApiModelPropertyOptional()
+  public messageSent: UserEntity;
+
+  /**
+   * O usuário que recebeu a mensagem
+   */
+  @ApiModelPropertyOptional()
+  public messageReceived: UserEntity;
+
+  /**
    * Construtor padrão
    */
   constructor(
@@ -41,5 +53,8 @@ export class ChatProxy extends BaseCrudProxy {
     this.messageSentId = entity.messageSentId;
     this.messageReceivedId = entity.messageReceivedId;
     this.message = entity.message;
+
+    this.messageSent = entity.messageSent;
+    this.messageReceived = entity.messageReceived;
   }
 }

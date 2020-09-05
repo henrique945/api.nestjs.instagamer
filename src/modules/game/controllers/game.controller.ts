@@ -38,7 +38,7 @@ import { CreateGamePayload } from '../models/create-game.payload';
   },
   query: {
     join: {
-      post: {},
+      posts: {},
       userGames: {},
     },
   },

@@ -42,6 +42,7 @@ import { GameService } from '../../game/services/game.service';
       },
       game: {},
       comments: {},
+      favorites: {},
     },
   },
   routes: {

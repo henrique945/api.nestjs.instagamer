@@ -1,8 +1,10 @@
 //#region Imports
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { FavoriteEntity } from '../../../typeorm/entities/favorite.entity';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { PostEntity } from '../../../typeorm/entities/post.entity';
 
 //#endregion
 
@@ -10,6 +12,27 @@ import { FavoriteEntity } from '../../../typeorm/entities/favorite.entity';
  * A classe que representa as informações que são enviadas pela API sobre um favorito
  */
 export class FavoriteProxy extends BaseCrudProxy {
+
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(
+    entity: FavoriteEntity,
+  ) {
+    super(entity);
+
+    this.userId = entity.userId;
+    this.postId = entity.postId;
+
+    this.user = entity.user;
+    this.post = entity.post;
+  }
+
+  //#endregion
+
+  //#region Properties
 
   /**
    * O id do usuário associado ao comentário
@@ -24,14 +47,17 @@ export class FavoriteProxy extends BaseCrudProxy {
   public postId: number;
 
   /**
-   * Construtor padrão
+   * O usuário dono do favorito
    */
-  constructor(
-    entity: FavoriteEntity,
-  ) {
-    super(entity);
+  @ApiModelPropertyOptional()
+  public user: UserEntity;
 
-    this.userId = entity.userId;
-    this.postId = entity.postId;
-  }
+  /**
+   * O post que foi favoritado
+   */
+  @ApiModelPropertyOptional()
+  public post: PostEntity;
+
+  //#endregion
+
 }

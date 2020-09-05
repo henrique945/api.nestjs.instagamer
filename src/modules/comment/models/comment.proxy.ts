@@ -1,8 +1,10 @@
 //#region Imports
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { CommentEntity } from '../../../typeorm/entities/comment.entity';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { PostEntity } from '../../../typeorm/entities/post.entity';
 
 //#endregion
 
@@ -10,6 +12,28 @@ import { CommentEntity } from '../../../typeorm/entities/comment.entity';
  * A classe que representa as informações que são enviadas pela API sobre um comentário
  */
 export class CommentProxy extends BaseCrudProxy {
+
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(
+    entity: CommentEntity,
+  ) {
+    super(entity);
+
+    this.userId = entity.userId;
+    this.postId = entity.postId;
+    this.text = entity.text;
+
+    this.user = entity.user;
+    this.post = entity.post;
+  }
+
+  //#endregion
+
+  //#region Properties
 
   /**
    * O id do usuário associado ao comentário
@@ -30,15 +54,17 @@ export class CommentProxy extends BaseCrudProxy {
   public text: string;
 
   /**
-   * Construtor padrão
+   * O usuário que fez o comentário
    */
-  constructor(
-    entity: CommentEntity,
-  ) {
-    super(entity);
+  @ApiModelPropertyOptional()
+  public user: UserEntity;
 
-    this.userId = entity.userId;
-    this.postId = entity.postId;
-    this.text = entity.text;
-  }
+  /**
+   * O post ao qual pertence o comentário
+   */
+  @ApiModelPropertyOptional()
+  public post: PostEntity;
+
+  //#endregion
+
 }

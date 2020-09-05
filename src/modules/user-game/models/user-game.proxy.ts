@@ -13,6 +13,27 @@ import { UserEntity } from '../../../typeorm/entities/user.entity';
  */
 export class UserGameProxy extends BaseCrudProxy {
 
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(
+    entity: UserGameEntity,
+  ) {
+    super(entity);
+
+    this.userId = entity.userId;
+    this.gameId = entity.gameId;
+
+    this.user = entity.user;
+    this.game = entity.game;
+  }
+
+  //#endregion
+
+  //#region Properties
+
   /**
    * O id do usuário associado
    */
@@ -37,18 +58,6 @@ export class UserGameProxy extends BaseCrudProxy {
   @ApiModelProperty()
   public game: GameEntity;
 
-  /**
-   * Construtor padrão
-   */
-  constructor(
-    entity: UserGameEntity,
-  ) {
-    super(entity);
+  //#endregion
 
-    this.userId = entity.userId;
-    this.gameId = entity.gameId;
-
-    this.user = entity.user;
-    this.game = entity.game;
-  }
 }

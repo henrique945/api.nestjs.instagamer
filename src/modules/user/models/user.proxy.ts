@@ -5,6 +5,10 @@ import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { PostEntity } from '../../../typeorm/entities/post.entity';
+import { UserGameEntity } from '../../../typeorm/entities/user-game.entity';
+import { CommentEntity } from '../../../typeorm/entities/comment.entity';
+import { FavoriteEntity } from '../../../typeorm/entities/favorite.entity';
+import { ChatEntity } from '../../../typeorm/entities/chat.entity';
 
 //#endregion
 
@@ -12,6 +16,35 @@ import { PostEntity } from '../../../typeorm/entities/post.entity';
  * A classe que representa as informações que são enviadas pela API sobre um usuário
  */
 export class UserProxy extends BaseCrudProxy {
+
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(
+    entity: UserEntity,
+  ) {
+    super(entity);
+
+    this.email = entity.email;
+    this.name = entity.name;
+    this.cpf = entity.cpf;
+    this.description = entity.description;
+
+    this.roles = entity.roles;
+
+    this.posts = entity.posts;
+    this.userGames = entity.userGames;
+    this.comments = entity.comments;
+    this.favorites = entity.favorites;
+    this.messagesSent = entity.messagesSent;
+    this.messagesReceived = entity.messagesReceived;
+  }
+
+  //#endregion
+
+  //#region Properties
 
   /**
    * O e-mail do usuário
@@ -46,24 +79,39 @@ export class UserProxy extends BaseCrudProxy {
   /**
    * Os posts do usuário
    */
-  @ApiModelProperty()
+  @ApiModelPropertyOptional()
   public posts: PostEntity[];
 
   /**
-   * Construtor padrão
+   * Os usuário-jogos
    */
-  constructor(
-    entity: UserEntity,
-  ) {
-    super(entity);
+  @ApiModelPropertyOptional()
+  public userGames: UserGameEntity[];
 
-    this.email = entity.email;
-    this.name = entity.name;
-    this.cpf = entity.cpf;
-    this.description = entity.description;
+  /**
+   * Os comentários que o usuário fez
+   */
+  @ApiModelPropertyOptional()
+  public comments: CommentEntity[];
 
-    this.roles = entity.roles;
+  /**
+   * Os posts favoritos do usuário
+   */
+  @ApiModelPropertyOptional()
+  public favorites: FavoriteEntity[];
 
-    this.posts = entity.posts;
-  }
+  /**
+   * As mensagens enviadas pelo usuário
+   */
+  @ApiModelPropertyOptional()
+  public messagesSent: ChatEntity[];
+
+  /**
+   * As mesagens recebidas do usuário
+   */
+  @ApiModelPropertyOptional()
+  public messagesReceived: ChatEntity[];
+
+  //#endregion
+
 }
