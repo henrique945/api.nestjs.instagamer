@@ -1,6 +1,15 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse, ApiUseTags } from '@nestjs/swagger';
 
@@ -26,7 +35,8 @@ export class AuthController {
    */
   constructor(
     private readonly authService: AuthService,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -44,6 +54,9 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('/local')
   public async login(@Request() req: NestJSRequest, @Body() payload: LoginPayload): Promise<TokenProxy> {
+    if (!req.user.isEmailConfirmed)
+      throw new BadRequestException('Confirmação de e-mail necessária!');
+
     return await this.authService.signIn(req.user);
   }
 

@@ -86,6 +86,7 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
     if (!user)
       throw new NotFoundException('Usuário náo encontrado.');
 
+    // TODO: sendVerificationCode
     user.isEmailConfirmed = true;
 
     return await this.service.repository.save(user).then(response => mapCrud(UserProxy, response));
