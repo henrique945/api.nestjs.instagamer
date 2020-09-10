@@ -39,6 +39,7 @@
       "@nestjsx/crud": "^4.4.1",
       "@nestjsx/crud-request": "^4.4.1",
       "@nestjsx/crud-typeorm": "^4.4.1",
+      "@sendgrid/mail": "^7.2.5",
       "@sentry/minimal": "^5.13.2",
       "@sentry/node": "^5.13.2",
       "axios": "0.19.0",

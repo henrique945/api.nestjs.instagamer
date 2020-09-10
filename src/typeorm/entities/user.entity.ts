@@ -50,6 +50,12 @@ export class UserEntity extends BaseEntity {
   public description?: string;
 
   /**
+   * Diz se o usuário já confirmou o email
+   */
+  @Column({ nullable: false, default: false })
+  public isEmailConfirmed: boolean;
+
+  /**
    * As permissões desse usuário
    */
   @Column({ nullable: false })

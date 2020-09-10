@@ -32,6 +32,7 @@ export class UserProxy extends BaseCrudProxy {
     this.cpf = entity.cpf;
     this.description = entity.description;
 
+    this.isEmailConfirmed = entity.isEmailConfirmed;
     this.roles = entity.roles;
 
     this.posts = entity.posts;
@@ -69,6 +70,12 @@ export class UserProxy extends BaseCrudProxy {
    */
   @ApiModelPropertyOptional()
   public description?: string;
+
+  /**
+   * Diz se o usuário já confirmou o email
+   */
+  @ApiModelProperty()
+  public isEmailConfirmed: boolean;
 
   /**
    * As permissões desse usuário

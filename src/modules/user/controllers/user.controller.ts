@@ -7,11 +7,12 @@ import {
   Controller,
   Get,
   NotFoundException,
+  Param,
   Request,
   UnauthorizedException,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiImplicitParam, ApiOkResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { Crud, CrudRequest, CrudRequestInterceptor, Override, ParsedRequest } from '@nestjsx/crud';
 
 import { BaseCrudController } from '../../../common/base-crud.controller';
@@ -72,6 +73,23 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
   //#endregion
 
   //#region Public Methods
+
+  /**
+   * Método que verifica o email do usuário
+   */
+  @Get('/verify/email/:userId')
+  @ApiOperation({ title: 'Método que verifica o email do usuário' })
+  @ApiImplicitParam({ name: 'userId' })
+  public async verifyUserEmail(@Request() nestRequest: NestJSRequest, @Param('userId') userId: string): Promise<CrudProxy<UserProxy>> {
+    const user = await this.service.findOne({ where: { id: +userId } });
+
+    if (!user)
+      throw new NotFoundException('Usuário náo encontrado.');
+
+    user.isEmailConfirmed = true;
+
+    return await this.service.repository.save(user).then(response => mapCrud(UserProxy, response));
+  }
 
   /**
    * Método que retorna as informações do usuário que esteja logado
@@ -144,6 +162,9 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
 
     user.password = await this.service.getEncryptedPassword(user.password);
     user.roles = 'user';
+
+    // send confirmation email
+    await this.service.sendConfirmEmail(user.id, user.email);
 
     return await this.base.createOneBase(crudRequest, user).then(response => mapCrud(UserProxy, response));
   }

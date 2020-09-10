@@ -13,6 +13,10 @@ import { TypeOrmValueTypes } from '../../../models/enums/type-orm-value.types';
 import { VerifyProxy } from '../../../models/proxys/verify.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 
+// using Twilio SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+const sgMail = require('@sendgrid/mail');
+
 //#endregion
 
 /**
@@ -35,6 +39,28 @@ export class UserService extends TypeOrmCrudService<UserEntity> {
   //#endregion
 
   //#region Public Methods
+
+  /**
+   * Envia um email de confirmação para o usuário
+   */
+  public async sendConfirmEmail(id: number, email: string): Promise<void> {
+    sgMail.setApiKey('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');
+
+    // TODO: improve email hmtl
+    // TODO: send email from instagamer.social@hotmail.com
+
+    const msg = {
+      to: `${email}`,
+      from: 'henrique.rodrigues7@hotmail.com',
+      subject: 'Bem vindo ao Instagamer',
+      text: 'Bem vindo ao Instagamer',
+      html: '<div style="display: flex; flex-direction: column !important; align-items: center !important;">' +
+        '<strong>Clique no link a seguir para confirmar seu email.</strong>' +
+        '<a style="width: 6rem" href="www.google.com">Confirmar</a>' +
+        '</div>',
+    };
+    await sgMail.send(msg);
+  }
 
   /**
    * Método que verifica se algumas entidades existem
