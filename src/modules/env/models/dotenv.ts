@@ -177,6 +177,11 @@ export interface IDotEnv {
    */
   FACENS_ADMIN_PASSWORD: string;
 
+  /**
+   * Sendgrip emails API KEY
+   */
+  SENDGRID_API_KEY: string;
+
   //#endregion
 
   //#region HTTP Settings

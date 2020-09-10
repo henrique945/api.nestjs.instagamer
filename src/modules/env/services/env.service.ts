@@ -1,9 +1,8 @@
 //#region Imports
 
 import { InternalServerErrorException } from '@nestjs/common';
-import { CleanEnv, ValidatorSpec } from 'envalid';
-
 import * as envalid from 'envalid';
+import { CleanEnv, ValidatorSpec } from 'envalid';
 
 import { IDotEnv } from '../models/dotenv';
 import { implementOptionalInterface } from '../../../utils/interface';
@@ -82,6 +81,7 @@ export class EnvService extends implementOptionalInterface<Partial<Readonly<IDot
       FACENS_API_ENDPOINT: envalid.str({ default: '' }),
       FACENS_ADMIN_USER: envalid.str({ default: '' }),
       FACENS_ADMIN_PASSWORD: envalid.str({ default: '' }),
+      SENDGRID_API_KEY: envalid.str({ default: '' }),
       HTTP_TIMEOUT: envalid.num({ default: 5000 }),
       HTTP_MAX_REDIRECTS: envalid.num({ default: 5 }),
       HTTP_BASE_URL: envalid.str({ default: '' }),

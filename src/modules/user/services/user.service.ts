@@ -12,6 +12,7 @@ import * as bcryptjs from 'bcryptjs';
 import { TypeOrmValueTypes } from '../../../models/enums/type-orm-value.types';
 import { VerifyProxy } from '../../../models/proxys/verify.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { EnvService } from '../../env/services/env.service';
 
 // using Twilio SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
@@ -32,6 +33,7 @@ export class UserService extends TypeOrmCrudService<UserEntity> {
    */
   constructor(
     @InjectRepository(UserEntity) public repository: Repository<UserEntity>,
+    private readonly env: EnvService,
   ) {
     super(repository);
   }
@@ -44,7 +46,7 @@ export class UserService extends TypeOrmCrudService<UserEntity> {
    * Envia um email de confirmação para o usuário
    */
   public async sendConfirmEmail(id: number, email: string): Promise<void> {
-    sgMail.setApiKey('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');
+    sgMail.setApiKey(this.env.SENDGRID_API_KEY);
 
     // TODO: improve email hmtl
     // TODO: send email from instagamer.social@hotmail.com
