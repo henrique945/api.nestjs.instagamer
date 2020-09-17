@@ -13,6 +13,7 @@ import { TypeOrmValueTypes } from '../../../models/enums/type-orm-value.types';
 import { VerifyProxy } from '../../../models/proxys/verify.proxy';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { EnvService } from '../../env/services/env.service';
+import { emailHtml } from '../../../models/html/email.html';
 
 // using Twilio SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
@@ -48,18 +49,12 @@ export class UserService extends TypeOrmCrudService<UserEntity> {
   public async sendConfirmEmail(id: number, email: string): Promise<void> {
     sgMail.setApiKey(this.env.SENDGRID_API_KEY);
 
-    // TODO: improve email hmtl
-    // TODO: send email from instagamer.social@hotmail.com
-
     const msg = {
       to: `${email}`,
-      from: 'henrique.rodrigues7@hotmail.com',
+      from: 'instagamer.social@hotmail.com',
       subject: 'Bem vindo ao Instagamer',
       text: 'Bem vindo ao Instagamer',
-      html: '<div style="display: flex; flex-direction: column !important; align-items: center !important;">' +
-        '<strong>Clique no link a seguir para confirmar seu email.</strong>' +
-        '<a style="width: 6rem" href="www.google.com">Confirmar</a>' +
-        '</div>',
+      html: emailHtml(),
     };
     await sgMail.send(msg);
   }
