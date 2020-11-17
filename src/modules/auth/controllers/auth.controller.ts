@@ -17,6 +17,7 @@ import { TokenProxy } from '../../../models/proxys/token.proxy';
 import { NestJSRequest } from '../../../utils/type.shared';
 import { LoginPayload } from '../models/login.payload';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../../user/services/user.service';
 
 //#endregion
 
@@ -35,6 +36,7 @@ export class AuthController {
    */
   constructor(
     private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {
   }
 
@@ -56,6 +58,9 @@ export class AuthController {
   public async login(@Request() req: NestJSRequest, @Body() payload: LoginPayload): Promise<TokenProxy> {
     if (!req.user.isEmailConfirmed)
       throw new BadRequestException('Confirmação de e-mail necessária!');
+
+    // TODO: send email with code
+    await this.userService.send2FactoryAuth(req.user.id, payload.username);
 
     return await this.authService.signIn(req.user);
   }

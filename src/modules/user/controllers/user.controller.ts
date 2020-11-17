@@ -75,6 +75,22 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
   //#region Public Methods
 
   /**
+   * Método que verifica a autenticação do usuário
+   */
+  @Get('/verify/code/:code')
+  @ApiOperation({ title: 'Método que verifica o email do usuário' })
+  @ProtectTo('user', 'admin')
+  @ApiImplicitParam({ name: 'code' })
+  public async verify2FactoryAuth(@Request() nestRequest: NestJSRequest, @Param('code') code: string): Promise<boolean> {
+    const user = await this.service.findOne({ where: { id: nestRequest.user.id } });
+
+    if (!user)
+      throw new NotFoundException('Usuário náo encontrado.');
+
+    return code === user.code;
+  }
+
+  /**
    * Método que verifica o email do usuário
    */
   @Get('/verify/email/:userId')

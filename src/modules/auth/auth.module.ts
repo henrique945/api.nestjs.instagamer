@@ -9,6 +9,7 @@ import { AuthService } from './services/auth.service';
 import { AnonymousStrategyService } from './strategies/anonymous.strategy.service';
 import { JwtStrategy } from './strategies/jwt.strategy.service';
 import { LocalStrategy } from './strategies/local.strategy.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   providers: [
@@ -26,6 +27,7 @@ import { LocalStrategy } from './strategies/local.strategy.service';
     TypeOrmModule.forFeature([
       UserEntity,
     ]),
+    UserModule,
   ],
   exports: [
     AuthService,

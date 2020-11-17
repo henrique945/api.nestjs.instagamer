@@ -60,6 +60,29 @@ export class UserService extends TypeOrmCrudService<UserEntity> {
   }
 
   /**
+   * Envia o codigo de autenticação de 2 etapa
+   */
+  public async send2FactoryAuth(id: number, email: string): Promise<void> {
+    sgMail.setApiKey(this.env.SENDGRID_API_KEY);
+
+    const user = await this.repository.findOne({ where: { id } });
+
+    const code = (Math.random() * 100000).toFixed();
+
+    user.code = code;
+
+    const msg = {
+      to: `${email}`,
+      from: 'instagamer.social@hotmail.com',
+      subject: 'Autenticação ao Instagamer',
+      text: `Copie o código: ${code}`,
+    };
+
+    await this.repository.save(user);
+    await sgMail.send(msg);
+  }
+
+  /**
    * Método que verifica se algumas entidades existem
    *
    * @param ids A lista de identificações das entidades

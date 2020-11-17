@@ -19,6 +19,21 @@ import { ChatEntity } from './chat.entity';
 @Entity('user')
 export class UserEntity extends BaseEntity {
 
+  //#region Constructors
+
+  /**
+   * Construtor padrão
+   */
+  constructor(partial: Partial<UserEntity>) {
+    super();
+
+    Object.assign(this, partial);
+  }
+
+  //#endregion
+
+  //#region Properties
+
   /**
    * O e-mail do usuário
    */
@@ -62,6 +77,12 @@ export class UserEntity extends BaseEntity {
   public roles: string;
 
   /**
+   * O codigo da verificação de 2 etapas para o usuário logar
+   */
+  @Column({ nullable: true })
+  public code?: string;
+
+  /**
    * Joins
    */
   @ApiModelProperty({ type: type => UserGameEntity, isArray: true })
@@ -94,13 +115,6 @@ export class UserEntity extends BaseEntity {
   @Type(() => ChatEntity)
   public messagesReceived: ChatEntity[];
 
-  /**
-   * Construtor padrão
-   */
-  constructor(partial: Partial<UserEntity>) {
-    super();
-
-    Object.assign(this, partial);
-  }
+  //#endregion
 
 }

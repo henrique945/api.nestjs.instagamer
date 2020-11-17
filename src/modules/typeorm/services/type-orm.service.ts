@@ -72,7 +72,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         password: this.env.DB_PASSWORD,
         acquireTimeout: this.env.DB_TIMEOUT,
         extra: {
-          ssl: false,
+          ssl: true,
         },
       });
     } else if (this.env.DB_TYPE === 'sqlite') {
