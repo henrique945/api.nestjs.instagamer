@@ -175,13 +175,11 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
     if (alreadyHasUser)
       throw new BadRequestException('Já existe um usuário cadastrado com esse e-mail.');
 
-    // TODO: validar se o cpf é válido
-
     user.password = await this.service.getEncryptedPassword(user.password);
     user.roles = 'user';
 
     // send confirmation email
-    await this.service.sendConfirmEmail(user.id, user.email);
+    // await this.service.sendConfirmEmail(user.id, user.email);
 
     return await this.base.createOneBase(crudRequest, user).then(response => mapCrud(UserProxy, response));
   }

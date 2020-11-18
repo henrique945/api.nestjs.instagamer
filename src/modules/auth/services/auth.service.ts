@@ -108,7 +108,6 @@ export class AuthService {
     return user;
   }
 
-
   //#endregion
 
 }
