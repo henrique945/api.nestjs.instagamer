@@ -26,6 +26,7 @@ import { UpdatePostPayload } from '../models/update-post.payload';
 import { UserService } from '../../user/services/user.service';
 import { GameService } from '../../game/services/game.service';
 import { UserGameService } from '../../user-game/services/user-game.service';
+import { WhoEntity } from '../../../typeorm/entities/embedded/who.entity';
 
 //#endregion
 
@@ -193,8 +194,10 @@ export class PostController extends BaseCrudController<PostEntity, PostService> 
     return new PostEntity({
       ...isValid(id) && { id },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
-      ...isValid(payload.whoName) && { whoName: payload.whoName },
-      ...isValid(payload.whoDescription) && { whoDescription: payload.whoDescription },
+      who: new WhoEntity({
+        ...isValid(payload.whoName) && { name: payload.whoName },
+        ...isValid(payload.whoDescription) && { description: payload.whoDescription },
+      }),
       ...isValid(payload.imageUrl) && { imageUrl: payload.imageUrl },
       ...isValid(payload.userId) && { userId: payload.userId },
       ...isValid(payload.gameId) && { gameId: payload.gameId },
