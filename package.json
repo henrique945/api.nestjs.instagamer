@@ -4,6 +4,9 @@
    "description": "",
    "author": "Henrique Rodrigues Silva",
    "license": "MIT",
+   "engines": {
+      "node": "12.x"
+    },    
    "scripts": {
       "build": "tsc -p tsconfig.build.json",
       "build:prod": "rm -r -f dist && rimraf dist && npm run build",
