@@ -60,7 +60,7 @@ export class AuthController {
       throw new BadRequestException('Confirmação de e-mail necessária!');
 
     // TODO: send email with code
-    await this.userService.send2FactoryAuth(req.user.id, payload.username);
+    // await this.userService.send2FactoryAuth(req.user.id, payload.username);
 
     return await this.authService.signIn(req.user);
   }
