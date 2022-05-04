@@ -179,7 +179,7 @@ export class UserController extends BaseCrudController<UserEntity, UserService> 
     user.roles = 'user';
 
     // send confirmation email
-    await this.service.sendConfirmEmail(user.id, user.email);
+    // await this.service.sendConfirmEmail(user.id, user.email);
 
     return await this.base.createOneBase(crudRequest, user).then(response => mapCrud(UserProxy, response));
   }
