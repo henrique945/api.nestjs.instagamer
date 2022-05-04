@@ -1,6 +1,6 @@
 //#region  Imports
 
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { forwardRef, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as Sentry from '@sentry/node';
 
@@ -29,6 +29,7 @@ export class AuthService {
    * Construtor padrão
    */
   constructor(
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly env: EnvService,
@@ -59,7 +60,7 @@ export class AuthService {
     const now = Date.now().valueOf();
     const expiresAt = now + ms(expiresIn);
 
-    return new TokenProxy({ token: `Bearer ${ token }`, expiresAt });
+    return new TokenProxy({ token: `Bearer ${token}`, expiresAt });
   }
 
   /**
