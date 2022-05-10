@@ -1,28 +1,57 @@
-import { GameService } from './game.service';
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { GameModule } from '../game.module';
+import { provideRepository } from '../../test/repository.mock';
+import { GameEntity } from '../../../typeorm/entities/game.entity';
+import { Repository } from 'typeorm';
+import { GameController } from '../controllers/game.controller';
+import { GameProxy } from '../models/game.proxy';
+
+const game = new GameProxy({
+  id: 1,
+  titleImage: '',
+  listImages: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  userGames: [],
+  posts: [],
+  isActive: true,
+  who: {
+    name: '', description: '',
+  },
+});
 
 describe('GameService', () => {
-  let gameService: GameService;
+  let gameController: GameController;
 
   beforeEach(async () => {
-    const module = await Test.createTestingModule({
+    const moduleRef = await Test.createTestingModule({
       providers: [
-        GameService,
-        {
-          provide: getRepositoryToken(GameService),
-          useValue: {}
-        },
+        GameController,
+        provideRepository<GameEntity, Repository<GameEntity>>(new Repository<GameEntity>()),
       ],
     }).compile();
 
-    gameService = await module.get<GameService>(GameService);
+    gameController = moduleRef.get<GameController>(GameController);
+
+    // const module = await Test.createTestingModule({
+    //   providers: [
+    //     GameService,
+    //     {
+    //       provide: getRepositoryToken(GameService),
+    //       useValue: {},
+    //     },
+    //   ],
+    // }).compile();
+
+    // gameService = await module.get<GameService>(GameService);
   });
 
   describe('Test game service after mock', () => {
     it('test getOne', async () => {
-      expect(typeof await gameService.exists([1])).not.toEqual(null);
+      jest.spyOn(gameController, 'getOne').mockImplementation((_, gameId) => {
+        expect(gameId).toBe(game.id);
+
+        return Promise.resolve(game);
+      });
     });
   });
 });
