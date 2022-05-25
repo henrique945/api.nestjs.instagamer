@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserEntity } from '../../typeorm/entities/user.entity';
@@ -16,7 +16,6 @@ import { UserModule } from '../user/user.module';
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    UserService,
     AnonymousStrategyService,
   ],
   controllers: [
@@ -27,7 +26,7 @@ import { UserModule } from '../user/user.module';
     TypeOrmModule.forFeature([
       UserEntity,
     ]),
-    UserModule,
+    forwardRef(() => UserModule),
   ],
   exports: [
     AuthService,
