@@ -3,6 +3,9 @@
    "version": "0.0.2",
    "author": "Henrique Rodrigues Silva",
    "license": "MIT",
+   "engines": {
+      "node": "12.x"
+   },
    "scripts": {
       "build": "tsc -p tsconfig.build.json",
       "build:prod": "rm -r -f dist && rimraf dist && npm run build",
@@ -12,7 +15,7 @@
       "start:dev": "nest start --watch",
       "start:debug": "nest start --debug --watch",
       "start:azure": "npm run deploy && func host start",
-      "start:prod": "node --icu-data-dir=./node_modules/full-icu dist/main.js",
+      "start:prod": "node dist/main.js",
       "lint": "tslint -p tsconfig.json -c tslint.json",
       "test": "npm run test:e2e",
       "test:watch": "jest --watch",

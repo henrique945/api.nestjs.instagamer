@@ -1,25 +1,17 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testMatch": [
-    "<rootDir>/test/**/*.e2e-spec.{ts,js}"
-  ],
+  "testMatch": ["<rootDir>/test/**/*.e2e-spec.{ts,js}"],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "collectCoverage": true,
-  "coveragePathIgnorePatterns":  [
-    "/node_modules/",
-    "/src/typeorm/"
-  ],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/src/typeorm/"],
   "coverageDirectory": "./coverage",
   "globals": {
     "NODE_ENV": "test"
   },
-  "testTimeout": 12000
+  "testTimeout": 12000,
+  "automock": true
 }

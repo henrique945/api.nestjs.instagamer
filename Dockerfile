@@ -6,4 +6,4 @@ RUN mkdir /var/www/storage -p
 
 EXPOSE 3000
 
-CMD ["node --with-intl=full-icu", "dist/main.js"]
+CMD ["node", "dist/main.js"]

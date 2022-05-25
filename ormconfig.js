@@ -67,8 +67,9 @@ if (env.DB_TYPE === 'postgres')
     acquireTimeout: env.DB_TIMEOUT,
     rejectUnauthorized: true,
     extra: {
-      ssl: true,
+      ssl: { rejectUnauthorized: false },
     },
+    ssl: { rejectUnauthorized: false },
   });
 
 module.exports = config;
